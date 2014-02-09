@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.prefs.Preferences;
 
-public class WinRegistry {
+public class WindowsRegistry {
 
     public static final int HKEY_CURRENT_USER = 0x80000001;
     public static final int HKEY_LOCAL_MACHINE = 0x80000002;
