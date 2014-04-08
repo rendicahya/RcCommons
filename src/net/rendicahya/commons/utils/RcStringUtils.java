@@ -1,8 +1,23 @@
 package net.rendicahya.commons.utils;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 
 public class RcStringUtils {
+
+    private static Pattern replaceCamelCasePattern;
+    private static DecimalFormat rupiahFormat;
+
+    public static String replaceCamelCase(String input, String replacement) {
+        if (replaceCamelCasePattern == null) {
+            replaceCamelCasePattern = Pattern.compile("(?<=[a-z])(?=[A-Z])");
+        }
+
+        return replaceCamelCasePattern.matcher(input).replaceAll(replacement);
+    }
 
     public static String centerPad(String leftStr, String rightStr, int size) {
         return centerPad(leftStr, rightStr, " ", size);
@@ -16,19 +31,31 @@ public class RcStringUtils {
         return str.toString();
     }
 
+    public static String expFormatRupiah(Number input, boolean prependRp) {
+        if (rupiahFormat == null) {
+            DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
+            decimalFormatSymbols.setCurrencySymbol(prependRp ? "Rp " : "");
+            decimalFormatSymbols.setMonetaryDecimalSeparator(',');
+            decimalFormatSymbols.setGroupingSeparator('.');
+
+            rupiahFormat = (DecimalFormat) NumberFormat.getCurrencyInstance();
+            rupiahFormat.setDecimalFormatSymbols(decimalFormatSymbols);
+        }
+
+        return rupiahFormat.format(input);
+    }
+
     public static String formatRupiah(long in) {
         return formatRupiah(in, true);
     }
 
     public static String formatRupiah(long in, boolean prependRp) {
-        if (in < 1000) {
-            return prependRp ? "Rp " + in : String.valueOf(in);
-        }
-
         StringBuilder number = new StringBuilder(String.valueOf(in));
 
-        for (int i = number.length() - 3; i > 0; i -= 3) {
-            number.insert(i, '.');
+        if (in >= 1000) {
+            for (int i = number.length() - 3; i > 0; i -= 3) {
+                number.insert(i, '.');
+            }
         }
 
         if (prependRp) {
