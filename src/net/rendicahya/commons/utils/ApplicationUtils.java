@@ -34,7 +34,6 @@ public class ApplicationUtils {
                 try {
                     Runtime.getRuntime().exec(cmd.toString());
                 } catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
         });
