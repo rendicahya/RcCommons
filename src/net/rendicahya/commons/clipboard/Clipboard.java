@@ -8,19 +8,19 @@ import java.io.IOException;
 
 public class Clipboard {
 
-    private static final java.awt.datatransfer.Clipboard clipboard;
+    private static final java.awt.datatransfer.Clipboard CLIPBOARD;
 
     static {
-        clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        CLIPBOARD = Toolkit.getDefaultToolkit().getSystemClipboard();
     }
 
     public static void setString(String str) {
-        clipboard.setContents(new StringSelection(str), null);
+        CLIPBOARD.setContents(new StringSelection(str), null);
     }
 
     public static String getString() {
         try {
-            return (String) clipboard.getData(DataFlavor.stringFlavor);
+            return (String) CLIPBOARD.getData(DataFlavor.stringFlavor);
         } catch (UnsupportedFlavorException | IOException ex) {
             return null;
         }
